@@ -29,6 +29,80 @@ def about():
 def model():
     # data extraction:
     if request.method == 'POST':
+        data = request.form['input']
+    if 'http' in data:
+        print("Yes")
+        webarticle_data = urllib.request.urlopen(data)
+        webarticle = webarticle_data.read()
+        parsed_webarticle = bs.BeautifulSoup(webarticle, 'lxml')
+        webarticle_text = parsed_webarticle.find_all('p')
+        article = ""
+        for p in webarticle_text:
+            article += p.text
+    else:
+        article = data
+
+    # pre-processing:
+
+    # removing square brackets and extra spaces:
+    article = re.sub(r'\[[0-9]*\]', ' ', article)
+    article = re.sub(r'\s+', ' ', article)
+
+    # removing special characters and digits:
+
+    cleaned_article = re.sub('[^a-zA-Z]', ' ', article)
+    cleaned_article = re.sub(r'\s+', ' ', cleaned_article)
+
+    # we use formatted article text:
+    sentence_list = nltk.sent_tokenize(article)
+
+    # creating weighted frequency:
+    stopwords = nltk.corpus.stopwords.words('english')
+    word_frequencies = {}
+
+    for word in nltk.word_tokenize(cleaned_article):
+        if word not in stopwords:
+            if word not in word_frequencies.keys():
+                word_frequencies[word] = 1
+            else:
+                word_frequencies[word] += 1
+
+    maximum_frequency = max(word_frequencies.values())
+
+    for word in word_frequencies.keys():
+        word_frequencies[word] = (word_frequencies[word] / maximum_frequency)
+
+    # calculating sentence scores:
+
+    sentence_scores = {}
+
+    for sent in sentence_list:
+        for word in nltk.word_tokenize(sent.lower()):
+            if word in word_frequencies.keys():
+                if len(sent.split(' ')) < 30:
+                    if sent not in sentence_scores.keys():
+                        sentence_scores[sent] = word_frequencies[word]
+                    else:
+                        sentence_scores[sent] += word_frequencies[word]
+
+    summary_sentences = heapq.nlargest(7, sentence_scores, key=sentence_scores.get)
+
+    summary = ' '.join(summary_sentences)
+    return summary
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+@app.route("/model", methods=['POST'])
+def model():
+    # data extraction:
+    if request.method == 'POST':
         link = request.form['link']
     scrapped_data = urllib.request.urlopen(link)
     article = scrapped_data.read()
@@ -88,8 +162,4 @@ def model():
     summary_sentences = heapq.nlargest(7, sentence_scores, key=sentence_scores.get)
 
     summary = ' '.join(summary_sentences)
-    return summary
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render_template('result.html', summary=summary)

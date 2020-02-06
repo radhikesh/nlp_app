@@ -28,38 +28,39 @@ def about():
 def model():
     # data extraction:
     if request.method == 'POST':
-        link = request.form['link']
-    scrapped_data = urllib.request.urlopen(link)
-    article = scrapped_data.read()
-
-    parsed_article = bs.BeautifulSoup(article, 'lxml')
-
-    paragraphs = parsed_article.find_all('p')
-
-    article_text = ""
-
-    for p in paragraphs:
-        article_text += p.text
+        data = request.form['link']
+    if 'http' in data:
+        webarticle_data = urllib.request.urlopen(data)
+        webarticle = webarticle_data.read()
+        parsed_webarticle = bs.BeautifulSoup(webarticle, 'lxml')
+        webarticle_text = parsed_webarticle.find_all('p')
+        article = ""
+        for p in webarticle_text:
+            article += p.text
+    elif data == "":
+        return render_template('result2.html')
+    else:
+        article = data
 
     # pre-processing:
 
     # removing square brackets and extra spaces:
-    article_text = re.sub(r'\[[0-9]*\]', ' ', article_text)
-    article_text = re.sub(r'\s+', ' ', article_text)
+    article = re.sub(r'\[[0-9]*\]', ' ', article)
+    article = re.sub(r'\s+', ' ', article)
 
     # removing special characters and digits:
 
-    formatted_article_text = re.sub('[^a-zA-Z]', ' ', article_text)
-    formatted_article_text = re.sub(r'\s+', ' ', formatted_article_text)
+    cleaned_article = re.sub('[^a-zA-Z]', ' ', article)
+    cleaned_article = re.sub(r'\s+', ' ', cleaned_article)
 
     # we use formatted article text:
-    sentence_list = nltk.sent_tokenize(article_text)
+    sentence_list = nltk.sent_tokenize(article)
 
     # creating weighted frequency:
     stopwords = nltk.corpus.stopwords.words('english')
     word_frequencies = {}
 
-    for word in nltk.word_tokenize(formatted_article_text):
+    for word in nltk.word_tokenize(cleaned_article):
         if word not in stopwords:
             if word not in word_frequencies.keys():
                 word_frequencies[word] = 1
@@ -87,7 +88,7 @@ def model():
     summary_sentences = heapq.nlargest(7, sentence_scores, key=sentence_scores.get)
 
     summary = ' '.join(summary_sentences)
-    return summary
+    return render_template('result.html', summary=summary)
 
 
 if __name__ == '__main__':
