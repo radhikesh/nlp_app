@@ -1,18 +1,19 @@
+from app import app
 from flask import Flask
 import bs4 as bs
-import urllib.request
 from flask import Flask, render_template, url_for, request
+import urllib.request
 import re
 import nltk as nltk
-# nltk.download('punkt')
+nltk.download('punkt')
 import heapq
-#nltk.download('stopwords')
+nltk.download('stopwords')
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello():
-    return "<h1> Hello World </h1>"
+    return render_template('home.html')
 
 @app.route("/home")
 def home():

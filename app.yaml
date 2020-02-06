@@ -1,13 +1,6 @@
-runtime: python3.7
-api_version: 1
-threadsafe: true
+runtime: python
+env: flex
+entrypoint: gunicorn -b :$PORT main:app
 
-handlers:
-- url: /static
-  static_dir: static
-- url: /.*
-  script: flasktest.app
-
-libraries:
-  - name: ssl
-    version: latest
+runtime_config:
+  python_version: 3
