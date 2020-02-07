@@ -1,6 +1,14 @@
-# University of Illinois Chicago NLP app
+# University of Illinois Chicago text summarizer app using NLP
 
 ------
+
+There are two main types to summarize the text:
+1. Extraction based summarization
+  creating summary by extracting major sentences from the article and combining them together.
+2. Abstraction based summarization
+  It creates new sentences that convey the useful information from the original text.
+
+For this task I used the first technique that is extraction based summarization.
 
 ### Steps followed to create the app:
 - Web scraping
