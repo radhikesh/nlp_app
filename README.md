@@ -10,7 +10,7 @@ There are two main methods to summarize the text:
 
 For this task I used the first technique that is extraction based summarization.
 
-### Steps followed to create the app: (code is in main.py)
+### Steps followed to create the app: (code is in main.py [file][])
 - Web scraping
   - Extracted the text from the article url using urllib and beautifulsoup library
   - Parsed the extracted text using lxml parser
@@ -30,6 +30,7 @@ For this task I used the first technique that is extraction based summarization.
   - Check out the app [here][]
 
 <!-- external links -->
+[file]:https://github.com/radhikesh/nlp_app/blob/master/main.py
 [here]:https://text-summarizer-nlp-app.appspot.com/
 
 
