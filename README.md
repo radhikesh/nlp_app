@@ -17,9 +17,9 @@ For this task I used the first technique that is extraction based summarization.
 - Pre-processing
   - Removed special characters and digits
   - Removed extra white spaces
-  - tokenizing the article into different sentences
+  - Tokenized the article into different sentences
 - Article Summary using nltk library
-  - Calculated the frequency of occurrence of each word except the stopwords (like is, and,the)
+  - Calculated the frequency of occurrence of each word except the stopwords (like is, and, the)
   - Calculated the weighted frequency which is the ratio of frequency of each word over the frequency of the most
        occurring word.
   - Calculated the sentence score by adding the weighted frequency for each word.
