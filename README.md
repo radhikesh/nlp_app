@@ -29,6 +29,9 @@ For this task I used the first technique that is extraction based summarization.
   - Deployed the app on GCP's (google cloud platform) app engine
   - The app takes any article link or the article itself as the input to create the summary
   - The article must be atleast 200 words
+  - I tested the app with the following uic news article but it's general enough to work with any news article
+    - https://today.uic.edu/uic-student-launches-late-night-talk-show
+    - https://today.uic.edu/bringing-the-farm-to-the-dining-halls
   - Check out the app [here][]
   - Code is in main.py [file][]
 
