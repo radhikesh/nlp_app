@@ -67,27 +67,27 @@ def model():
             else:
                 word_frequencies[word] += 1
 
-    maximum_frequency = max(word_frequencies.values())
+    max_frequency = max(word_frequencies.values())
 
     for word in word_frequencies.keys():
-        word_frequencies[word] = (word_frequencies[word] / maximum_frequency)
+        word_frequencies[word] = (word_frequencies[word] / max_frequency)
 
     # calculating sentence scores:
 
     sentence_scores = {}
 
-    for sent in sentence_list:
-        for word in nltk.word_tokenize(sent.lower()):
+    for sentence in sentence_list:
+        for word in nltk.word_tokenize(sentence.lower()):
             if word in word_frequencies.keys():
-                if len(sent.split(' ')) < 30:
-                    if sent not in sentence_scores.keys():
-                        sentence_scores[sent] = word_frequencies[word]
+                if len(sentence.split(' ')) < 30:
+                    if sentence not in sentence_scores.keys():
+                        sentence_scores[sentence] = word_frequencies[word]
                     else:
-                        sentence_scores[sent] += word_frequencies[word]
+                        sentence_scores[sentence] += word_frequencies[word]
 
-    summary_sentences = heapq.nlargest(7, sentence_scores, key=sentence_scores.get)
+    article_summary = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
 
-    summary = ' '.join(summary_sentences)
+    summary = ' '.join(article_summary)
     return render_template('result.html', summary=summary)
 
 
