@@ -27,6 +27,8 @@ For this task I used the first technique that is extraction based summarization.
 - App deployment:
   - Used flask library to convert the above process into an app
   - Deployed the app on GCP's (google cloud platform) app engine
+  - The app takes any article link or the article itself as the input to create the summary
+  - The article must be atleast 200 words
   - Check out the app [here][]
   - Code is in main.py [file][]
 

@@ -39,6 +39,8 @@ def model():
             article += p.text
     elif data == "":
         return render_template('result2.html')
+    elif len(data.split()) < 200:
+        return render_template('result3.html')
     else:
         article = data
 
