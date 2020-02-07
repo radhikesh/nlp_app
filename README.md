@@ -10,7 +10,7 @@ There are two main methods to summarize the text:
 
 For this task I used the first technique that is extraction based summarization.
 
-### Steps followed to create the app:
+### Steps followed to create the app: (code is in main.py)
 - Web scraping
   - Extracted the text from the article url using urllib and beautifulsoup library
   - Parsed the extracted text using lxml parser
